@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  nginx-duo-task:
+    image: nginx:alpine
+    ports:
+      - target: 80
+        published: 80
+    depends_on:
+      - duo-app
+    networks:
+      - duo-task-network
+    volumes:
+      - type: bind
+        source: nginx.conf
+        target: /etc/nginx/nginx.conf
+  duo-app:
+    image: 1391819/duo-task:v1
+    networks:
+      - duo-task-network
+    deploy:
+      replicas: 3
+networks:
+  duo-task-network:
